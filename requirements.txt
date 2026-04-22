@@ -1,0 +1,21 @@
+flask
+fastapi
+uvicorn
+plotly
+pandas
+scikit-learn
+numpy
+requests
+googlesearch-python
+tld
+psutil
+joblib
+datasets
+transformers
+torch
+accelerate
+safetensors
+
+
+uvicorn app:app --host 0.0.0.0 --port 6500
+

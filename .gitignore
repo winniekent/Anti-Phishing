@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+bin/
+lib/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Environment and Secrets
+.env
+*.log
+
+# Machine Learning / Models
+# Ignore large model checkpoints to keep repo size manageable
+# Use Git LFS if you intend to track these
+models/trainer_runs/checkpoint-*/
+!models/trainer_runs/checkpoint-1104/
+
+# Data and Storage
+# Ignore local runtime storage files
+backend/storage/*.json
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Extension specific
+*.crx
+*.pem
+
+# Node/Frontend (if applicable in future)
+node_modules/
+npm-debug.log*
+yarn-debug.log*

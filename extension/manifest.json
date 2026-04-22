@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Anti-Phisher",
+  "version": "1.0",
+  "description": "Detects malicious mail using machine learning, provides user education, and tracks behavior.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://outlook.live.com/*",
+        "https://outlook.office.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "notifications",
+    "activeTab",
+    "webNavigation",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "healthcare-icon.svg",
+      "48": "healthcare-icon.svg",
+      "128": "healthcare-icon.svg"
+    }
+  },
+  "icons": {
+    "16": "healthcare-icon.svg",
+    "48": "healthcare-icon.svg"
+  },
+  "host_permissions": [
+    "http://localhost:6500/*"
+  ]
+}
+
+

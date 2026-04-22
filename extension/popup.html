@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Phishing</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --danger: #dc2626;
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      width: 360px;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 35%),
+                  radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.1), transparent 28%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      padding: 18px;
+    }
+
+    .hero {
+      padding: 18px 18px 16px;
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      border-radius: 22px;
+      color: #fff;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: 20px;
+      margin: 0 0 6px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.92;
+      line-height: 1.6;
+    }
+
+    .status-card {
+      position: relative;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .status-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      border-radius: 20px 0 0 20px;
+      background: linear-gradient(180deg, #2563eb, #38bdf8);
+    }
+
+    .status-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .status-label::before {
+      content: "●";
+      color: #22c55e;
+      font-size: 10px;
+    }
+
+    #liveStatus {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .cta {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.35);
+      outline-offset: 4px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    #analyzeData {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #fff;
+    }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    #overlay,
+    #popup {
+      display: none;
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.24);
+      z-index: 100;
+    }
+
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      max-width: calc(100vw - 32px);
+      transform: translate(-50%, -50%);
+      padding: 18px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 26px 52px rgba(15, 23, 42, 0.18);
+      z-index: 101;
+    }
+
+    #popupClose {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    #predictionText {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1><i class="fas fa-shield-medical" style="margin-right: 8px;"></i>Email Phishing Detector</h1>
+      <p>Automatic scanning is enabled for Gmail and Outlook. Stay protected with instant detection and clear alerts.</p>
+    </section>
+
+    <div class="status-card">
+      <div class="status-label">Automatic detection</div>
+      <p id="liveStatus">Open an email in Gmail or Outlook to start scanning.</p>
+    </div>
+
+    <div class="cta">
+      <button id="analyzeData">Open analysis dashboard</button>
+    </div>
+
+    <div class="footer">Tip: Keep your inbox open and let the extension scan every opened message for phishing risk.</div>
+  </div>
+
+  <div id="overlay"></div>
+
+  <div id="popup">
+    <span id="popupClose">&times;</span>
+    <p id="predictionText"></p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

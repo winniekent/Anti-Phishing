@@ -39,6 +39,7 @@ logging.basicConfig(level=logging.DEBUG)
 # CONFIGURATION
 # ====================================================================
 PHISHING_THRESHOLD = 0.85
+MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(ROOT_DIR, "models", "trainer_runs"))
 # ====================================================================
 
 
@@ -130,8 +131,14 @@ def _load_text_model():
     if _TEXT_MODEL is not None and _TEXT_TOKENIZER is not None and _TEXT_DEVICE is not None:
         return _TEXT_MODEL, _TEXT_TOKENIZER, _TEXT_DEVICE
 
-    checkpoint_base = os.path.join(ROOT_DIR, "models", "trainer_runs")
-    checkpoint_dir = _find_latest_checkpoint(checkpoint_base)
+    # Try to find a local checkpoint first
+    try:
+        checkpoint_dir = _find_latest_checkpoint(MODEL_PATH)
+    except RuntimeError:
+        # Fallback for production: allow loading a model name from environment
+        # e.g., "distilbert-base-uncased" or a Hugging Face Hub ID
+        checkpoint_dir = os.getenv("MODEL_ID", "distilbert-base-uncased")
+
     tokenizer = AutoTokenizer.from_pretrained(checkpoint_dir)
     model = AutoModelForSequenceClassification.from_pretrained(checkpoint_dir)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

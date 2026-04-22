@@ -32,8 +32,7 @@ Thumbs.db
 # Machine Learning / Models
 # Ignore large model checkpoints to keep repo size manageable
 # Use Git LFS if you intend to track these
-models/trainer_runs/checkpoint-*/
-!models/trainer_runs/checkpoint-1104/
+models/trainer_runs/
 
 # Data and Storage
 # Ignore local runtime storage files
